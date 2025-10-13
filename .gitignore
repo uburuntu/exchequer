@@ -1,0 +1,36 @@
+node_modules
+
+# Playwright
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+/playwright/.auth/
+
+# Legacy Python implementation
+/old/
+
+# Temporary test output files
+*.txt
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.idea/
+.vscode/
+*.swp
+
+# Environment
+.env
+.env.local
+
+# Build
+dist/
+
+# Coverage
+coverage/
+
+# Logs
+*.log

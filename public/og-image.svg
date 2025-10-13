@@ -1,0 +1,66 @@
+<svg width="1200" height="630" viewBox="0 0 1200 630" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="1200" height="630" fill="#1a2332"/>
+
+  <!-- Subtle gradient overlay -->
+  <defs>
+    <radialGradient id="glow1" cx="20%" cy="80%" r="50%">
+      <stop offset="0%" stop-color="#c9a961" stop-opacity="0.08"/>
+      <stop offset="100%" stop-color="#1a2332" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="glow2" cx="80%" cy="20%" r="40%">
+      <stop offset="0%" stop-color="#8b2e3f" stop-opacity="0.1"/>
+      <stop offset="100%" stop-color="#1a2332" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#glow1)"/>
+  <rect width="1200" height="630" fill="url(#glow2)"/>
+
+  <!-- Top accent line -->
+  <rect y="0" width="1200" height="4" fill="url(#accent)"/>
+  <defs>
+    <linearGradient id="accent" x1="0" y1="0" x2="1200" y2="0">
+      <stop offset="0%" stop-color="#8b2e3f"/>
+      <stop offset="50%" stop-color="#c9a961"/>
+      <stop offset="100%" stop-color="#8b2e3f"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Icon: Chart/Document -->
+  <g transform="translate(100, 200)">
+    <rect x="0" y="0" width="120" height="150" rx="8" fill="#2a3a4d" stroke="#c9a961" stroke-width="2"/>
+    <rect x="20" y="30" width="80" height="6" rx="3" fill="#c9a961" opacity="0.6"/>
+    <rect x="20" y="50" width="60" height="6" rx="3" fill="#4a5a6d"/>
+    <rect x="20" y="70" width="70" height="6" rx="3" fill="#4a5a6d"/>
+    <rect x="20" y="90" width="50" height="6" rx="3" fill="#4a5a6d"/>
+    <!-- Chart bars -->
+    <rect x="25" y="110" width="15" height="25" rx="2" fill="#2e7d32"/>
+    <rect x="50" y="120" width="15" height="15" rx="2" fill="#c62828"/>
+    <rect x="75" y="105" width="15" height="30" rx="2" fill="#2e7d32"/>
+  </g>
+
+  <!-- Title -->
+  <text x="260" y="260" font-family="Georgia, serif" font-size="72" font-weight="700" fill="#f5f0e5">Exchequer</text>
+
+  <!-- Subtitle -->
+  <text x="260" y="320" font-family="system-ui, sans-serif" font-size="32" fill="#c9a961">UK Capital Gains Tax Calculator</text>
+
+  <!-- Description -->
+  <text x="260" y="380" font-family="system-ui, sans-serif" font-size="24" fill="#a0a8b0">Privacy-first tax calculations — entirely in your browser</text>
+
+  <!-- Features -->
+  <g transform="translate(260, 430)" font-family="system-ui, sans-serif" font-size="18" fill="#6a7a8a">
+    <text x="0" y="0">✓ HMRC Same-Day &amp; Bed &amp; Breakfast Rules</text>
+    <text x="0" y="35">✓ Section 104 Pool Calculations</text>
+    <text x="0" y="70">✓ Multiple Broker Support</text>
+  </g>
+
+  <!-- URL -->
+  <text x="100" y="580" font-family="system-ui, sans-serif" font-size="22" fill="#c9a961">exchequer.rmbk.me</text>
+
+  <!-- UK Flag hint -->
+  <g transform="translate(1050, 540)">
+    <rect width="60" height="40" rx="4" fill="#1a2744" stroke="#4a5a6d" stroke-width="1"/>
+    <text x="30" y="28" font-size="24" text-anchor="middle">🇬🇧</text>
+  </g>
+</svg>

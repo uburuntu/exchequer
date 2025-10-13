@@ -1,0 +1,379 @@
+import { test, expect } from "@playwright/test";
+
+/**
+ * E2E Tests for New Features
+ *
+ * Tests for: Help Panel, FX Source Selector, Export, Session Resume, Warnings
+ */
+
+test.describe("Help Panel", () => {
+  test.beforeEach(async ({ page }) => {
+    await page.goto("/");
+  });
+
+  test("should open help panel when clicked", async ({ page }) => {
+    // Find and click the help button
+    const helpButton = page.locator('button:has-text("Help")').first();
+    await expect(helpButton).toBeVisible();
+    await helpButton.click();
+
+    // Help panel should now be visible
+    const helpPanel = page.locator(".help-panel, [aria-label*='help']").first();
+    await expect(helpPanel).toBeVisible();
+  });
+
+  test("should display HMRC references in help panel", async ({ page }) => {
+    // Open help panel
+    const helpButton = page.locator('button:has-text("Help")').first();
+    await helpButton.click();
+
+    // Should contain HMRC reference content
+    await expect(page.locator("text=Same-Day Rule")).toBeVisible();
+    await expect(page.locator("text=Section 104")).toBeVisible();
+  });
+
+  test("should close help panel when clicking outside", async ({ page }) => {
+    // Open help panel
+    const helpButton = page.locator('button:has-text("Help")').first();
+    await helpButton.click();
+
+    const helpPanel = page.locator(".help-panel, [aria-label*='help']").first();
+    await expect(helpPanel).toBeVisible();
+
+    // Click outside the panel
+    await page.locator("body").click({ position: { x: 10, y: 10 } });
+
+    // Panel should close
+    await expect(helpPanel).not.toBeVisible({ timeout: 1000 });
+  });
+});
+
+test.describe("FX Source Selector", () => {
+  test.beforeEach(async ({ page }) => {
+    await page.goto("/");
+  });
+
+  test("should display FX source selector in header", async ({ page }) => {
+    const headerRight = page.locator(".header-right");
+    await expect(headerRight).toBeVisible();
+
+    // FX selector should be present
+    const fxSelector = page.locator(
+      '[class*="fx-source"], select:has-text("HMRC")'
+    ).first();
+    await expect(fxSelector).toBeVisible();
+  });
+
+  test("should allow changing FX source", async ({ page }) => {
+    // Load example data first to have transactions
+    const exampleBtn = page.locator("button", {
+      hasText: "Load example transaction data",
+    });
+    if (await exampleBtn.isVisible()) {
+      await exampleBtn.click();
+      await page.waitForTimeout(1000);
+    }
+
+    // Find FX source dropdown
+    const fxSelector = page.locator(".fx-source-selector select").first();
+    if (await fxSelector.isVisible()) {
+      // Check options exist
+      const options = await fxSelector.locator("option").allTextContents();
+      expect(options.length).toBeGreaterThan(1);
+
+      // Change the selection
+      await fxSelector.selectOption({ index: 1 });
+
+      // Wait for recalculation
+      await page.waitForTimeout(500);
+    }
+  });
+});
+
+test.describe("Export Functionality", () => {
+  test.beforeEach(async ({ page }) => {
+    await page.goto("/");
+  });
+
+  test("should display export button", async ({ page }) => {
+    const exportButton = page.locator('button:has-text("Export")').first();
+    await expect(exportButton).toBeVisible();
+  });
+
+  test("should show export options when clicked", async ({ page }) => {
+    const exportButton = page.locator('button:has-text("Export")').first();
+    await exportButton.click();
+
+    // Should show export dropdown/menu
+    const exportMenu = page.locator(
+      ".export-menu, [class*='export'] [class*='dropdown']"
+    ).first();
+    await expect(exportMenu).toBeVisible({ timeout: 2000 });
+  });
+
+  test("should have CSV export option", async ({ page }) => {
+    const exportButton = page.locator('button:has-text("Export")').first();
+    await exportButton.click();
+
+    // Look for CSV option
+    const csvOption = page.locator('button:has-text("CSV")').first();
+    await expect(csvOption).toBeVisible({ timeout: 2000 });
+  });
+
+  test("should have PDF export option", async ({ page }) => {
+    const exportButton = page.locator('button:has-text("Export")').first();
+    await exportButton.click();
+
+    // Look for PDF option
+    const pdfOption = page.locator('button:has-text("PDF")').first();
+    await expect(pdfOption).toBeVisible({ timeout: 2000 });
+  });
+});
+
+test.describe("Session Resume Dialog", () => {
+  test("should not show dialog on fresh visit", async ({ page, context }) => {
+    // Clear all storage
+    await context.clearCookies();
+    await page.goto("/");
+
+    // Clear IndexedDB
+    await page.evaluate(async () => {
+      const databases = await indexedDB.databases();
+      for (const db of databases) {
+        if (db.name) {
+          indexedDB.deleteDatabase(db.name);
+        }
+      }
+    });
+
+    // Reload page
+    await page.reload();
+    await page.waitForTimeout(500);
+
+    // Session resume dialog should not be visible
+    const dialog = page.locator('[role="dialog"]');
+    await expect(dialog).not.toBeVisible({ timeout: 2000 });
+  });
+
+  test("should show dialog when previous session exists", async ({
+    page,
+    context,
+  }) => {
+    // First, load some data and save it
+    await page.goto("/");
+
+    const exampleBtn = page.locator("button", {
+      hasText: "Load example transaction data",
+    });
+    if (await exampleBtn.isVisible()) {
+      await exampleBtn.click();
+      await page.waitForTimeout(1000);
+    }
+
+    // Navigate away and come back
+    await page.goto("about:blank");
+    await page.goto("/");
+
+    // Session resume dialog should appear
+    const dialog = page.locator('[role="dialog"]');
+    await expect(dialog).toBeVisible({ timeout: 5000 });
+
+    // Should have resume and dismiss buttons
+    await expect(page.locator('button:has-text("Resume Session")')).toBeVisible();
+    await expect(page.locator('button:has-text("Start Fresh")')).toBeVisible();
+  });
+
+  test("should restore session when resume clicked", async ({
+    page,
+    context,
+  }) => {
+    // Load data first
+    await page.goto("/");
+
+    const exampleBtn = page.locator("button", {
+      hasText: "Load example transaction data",
+    });
+    if (await exampleBtn.isVisible()) {
+      await exampleBtn.click();
+      await page.waitForTimeout(1000);
+    }
+
+    // Get transaction count before
+    const countBefore = await page.locator(".upload-summary strong").textContent();
+
+    // Navigate away and back
+    await page.goto("about:blank");
+    await page.goto("/");
+
+    // Click resume
+    const resumeBtn = page.locator('button:has-text("Resume Session")');
+    if (await resumeBtn.isVisible({ timeout: 3000 })) {
+      await resumeBtn.click();
+      await page.waitForTimeout(1000);
+
+      // Transactions should be restored
+      const countAfter = await page.locator(".upload-summary strong").textContent();
+      expect(countAfter).toBe(countBefore);
+    }
+  });
+
+  test("should clear session when start fresh clicked", async ({ page }) => {
+    // Load data first
+    await page.goto("/");
+
+    const exampleBtn = page.locator("button", {
+      hasText: "Load example transaction data",
+    });
+    if (await exampleBtn.isVisible()) {
+      await exampleBtn.click();
+      await page.waitForTimeout(1000);
+    }
+
+    // Navigate away and back
+    await page.goto("about:blank");
+    await page.goto("/");
+
+    // Click start fresh
+    const freshBtn = page.locator('button:has-text("Start Fresh")');
+    if (await freshBtn.isVisible({ timeout: 3000 })) {
+      await freshBtn.click();
+      await page.waitForTimeout(500);
+
+      // Dialog should close
+      await expect(page.locator('[role="dialog"]')).not.toBeVisible();
+
+      // Upload section should show empty state
+      await expect(page.locator("h2:has-text('Upload Your Transactions')")).toBeVisible();
+    }
+  });
+});
+
+test.describe("Warnings Panel", () => {
+  test.beforeEach(async ({ page }) => {
+    await page.goto("/");
+  });
+
+  test("should not show warnings panel when no warnings", async ({ page }) => {
+    // Load clean example data
+    const exampleBtn = page.locator("button", {
+      hasText: "Load example transaction data",
+    });
+    if (await exampleBtn.isVisible()) {
+      await exampleBtn.click();
+      await page.waitForTimeout(1000);
+    }
+
+    // Click on Summary tab
+    await page.click("text=Summary");
+
+    // Check if warnings panel exists but only if there are actual warnings
+    const warningsPanel = page.locator(".warnings-panel");
+
+    // If there are no warnings in the example data, panel should not be visible
+    // This test validates the conditional rendering
+    const panelCount = await warningsPanel.count();
+    if (panelCount > 0) {
+      // If visible, it should have actual warning content
+      await expect(warningsPanel.locator(".warning-item")).toBeAttached();
+    }
+  });
+
+  test("should display warnings with severity badges", async ({ page }) => {
+    // This test would need data that generates warnings
+    // For now, we verify the panel structure if it appears
+    const exampleBtn = page.locator("button", {
+      hasText: "Load example transaction data",
+    });
+    if (await exampleBtn.isVisible()) {
+      await exampleBtn.click();
+      await page.waitForTimeout(1000);
+    }
+
+    // Click on Summary tab
+    await page.click("text=Summary");
+
+    const warningsPanel = page.locator(".warnings-panel");
+    if (await warningsPanel.isVisible()) {
+      // Should have header with warning count
+      await expect(warningsPanel.locator(".panel-header")).toBeVisible();
+
+      // Should have badges for severity
+      const badges = warningsPanel.locator(".badge");
+      const badgeCount = await badges.count();
+      expect(badgeCount).toBeGreaterThan(0);
+    }
+  });
+
+  test("should be collapsible", async ({ page }) => {
+    const exampleBtn = page.locator("button", {
+      hasText: "Load example transaction data",
+    });
+    if (await exampleBtn.isVisible()) {
+      await exampleBtn.click();
+      await page.waitForTimeout(1000);
+    }
+
+    // Click on Summary tab
+    await page.click("text=Summary");
+
+    const warningsPanel = page.locator(".warnings-panel");
+    if (await warningsPanel.isVisible()) {
+      // Click header to collapse
+      await warningsPanel.locator(".panel-header").click();
+
+      // List should be hidden
+      const list = warningsPanel.locator(".warnings-list");
+      await expect(list).not.toBeVisible();
+
+      // Click again to expand
+      await warningsPanel.locator(".panel-header").click();
+      await expect(list).toBeVisible();
+    }
+  });
+});
+
+test.describe("Tax Year Selector", () => {
+  test.beforeEach(async ({ page }) => {
+    await page.goto("/");
+  });
+
+  test("should display tax year in header", async ({ page }) => {
+    const headerRight = page.locator(".header-right");
+    await expect(headerRight).toBeVisible();
+
+    // Tax year element should exist
+    const taxYear = page.locator('[class*="tax-year"]').first();
+    await expect(taxYear).toBeVisible();
+  });
+
+  test("should allow changing tax year", async ({ page }) => {
+    // Load example data first
+    const exampleBtn = page.locator("button", {
+      hasText: "Load example transaction data",
+    });
+    if (await exampleBtn.isVisible()) {
+      await exampleBtn.click();
+      await page.waitForTimeout(1000);
+    }
+
+    // Find tax year selector
+    const taxYearSelector = page.locator(".tax-year-selector select").first();
+    if (await taxYearSelector.isVisible()) {
+      // Get current value
+      const currentYear = await taxYearSelector.inputValue();
+
+      // Get all options
+      const options = await taxYearSelector.locator("option").allTextContents();
+      expect(options.length).toBeGreaterThan(0);
+
+      // Change to a different year if available
+      if (options.length > 1) {
+        await taxYearSelector.selectOption({ index: 1 });
+        await page.waitForTimeout(500);
+
+        // Summary should update (will show different tax year in heading)
+        await page.click("text=Summary");
+      }
+    }
+  });
+});

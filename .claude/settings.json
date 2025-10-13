@@ -1,0 +1,7 @@
+{
+  "enabledPlugins": {
+    "psc-assistant@claude-templates": false,
+    "llm-rules@Meta": false,
+    "meta@Meta": false
+  }
+}

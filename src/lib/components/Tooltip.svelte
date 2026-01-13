@@ -13,7 +13,6 @@
   let { title, children, content }: Props = $props();
 
   let isVisible = $state(false);
-  let tooltipEl: HTMLElement | null = $state(null);
 
   function show() {
     isVisible = true;
@@ -53,7 +52,6 @@
       class="tooltip-popup"
       id="tooltip-content"
       role="tooltip"
-      bind:this={tooltipEl}
     >
       <div class="tooltip-header">
         <span class="tooltip-icon" aria-hidden="true">

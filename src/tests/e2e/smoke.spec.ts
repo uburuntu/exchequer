@@ -50,7 +50,7 @@ test.describe('App Smoke Tests', () => {
     }
 
     // Load example data first - tabs only show with transactions
-    const exampleBtn = page.getByRole('button', { name: /load example data/i });
+    const exampleBtn = page.getByRole('button', { name: /try with sample trades/i });
     await expect(exampleBtn).toBeVisible({ timeout: 5000 });
     await exampleBtn.click();
     await page.waitForTimeout(1500);
@@ -76,7 +76,7 @@ test.describe('App Smoke Tests', () => {
     }
 
     // Load example data first
-    const exampleBtn = page.getByRole('button', { name: /load example data/i });
+    const exampleBtn = page.getByRole('button', { name: /try with sample trades/i });
     await expect(exampleBtn).toBeVisible({ timeout: 5000 });
     await exampleBtn.click();
     await page.waitForTimeout(1500);

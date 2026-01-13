@@ -32,7 +32,7 @@ pnpm install
 pnpm dev
 ```
 
-Open [localhost:5173](http://localhost:5173) and upload your broker CSV files.
+Open [localhost:5174](http://localhost:5174) and upload your broker CSV files.
 
 ### Commands
 

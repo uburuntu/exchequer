@@ -5,7 +5,6 @@ import Decimal from 'decimal.js-light';
 import { isinService } from './services/isin-service';
 import { initialPriceService } from './services/initial-price-service';
 import { ERI_DATA } from './data/eri-data';
-import { parseDate } from './parsers/utils';
 import { currencyConverter, FXSource } from './services/currency-converter';
 
 // Storage key for IndexedDB

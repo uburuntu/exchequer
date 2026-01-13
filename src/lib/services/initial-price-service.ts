@@ -1,5 +1,4 @@
-import { INITIAL_PRICES, type InitialPrice } from '../data/initial-prices';
-import { parseDate } from '../parsers/utils'; // Using the parser utility for consistent date parsing
+import { INITIAL_PRICES } from '../data/initial-prices';
 
 export class InitialPriceService {
   private prices: Map<string, number> = new Map();

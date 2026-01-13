@@ -111,7 +111,7 @@
     <!-- svelte-ignore a11y_no_static_element_interactions -->
     <div class="help-backdrop" onclick={() => isOpen = false}></div>
 
-    <aside class="help-panel" role="complementary" aria-label="CGT Help">
+    <aside class="help-panel" aria-label="CGT Help">
       <header class="panel-header">
         <h2>UK Capital Gains Tax Rules</h2>
         <button

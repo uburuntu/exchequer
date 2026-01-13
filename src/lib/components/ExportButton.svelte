@@ -4,7 +4,8 @@
     exportCGTReportToCSV,
     exportDisposalsToCSV,
     exportCGTReportToPDF,
-    exportDisposalsToPDF
+    exportDisposalsToPDF,
+    toSummarizedReport
   } from "../export";
 
   let isOpen = $state(false);
@@ -20,11 +21,13 @@
   }
 
   function handleExport() {
-    const report = appState.report;
-    if (!report) {
+    const rawReport = appState.report;
+    if (!rawReport) {
       console.error('No report available to export');
       return;
     }
+
+    const report = toSummarizedReport(rawReport);
 
     if (exportFormat === 'csv') {
       if (exportType === 'full') {
@@ -90,48 +93,48 @@
     <div class="dropdown-menu" role="menu">
       <div class="dropdown-section">
         <span class="dropdown-label">Content</span>
-        <div class="radio-option" onclick={() => exportType = 'full'}>
+        <label class="radio-option">
           <input
             type="radio"
             name="export-type"
             value="full"
-            checked={exportType === 'full'}
+            bind:group={exportType}
           />
           <span class="option-text">Full Report</span>
-        </div>
-        <div class="radio-option" onclick={() => exportType = 'disposals'}>
+        </label>
+        <label class="radio-option">
           <input
             type="radio"
             name="export-type"
             value="disposals"
-            checked={exportType === 'disposals'}
+            bind:group={exportType}
           />
           <span class="option-text">Disposals Only (SA108)</span>
-        </div>
+        </label>
       </div>
 
       <div class="dropdown-divider"></div>
 
       <div class="dropdown-section">
         <span class="dropdown-label">Format</span>
-        <div class="radio-option" onclick={() => exportFormat = 'pdf'}>
+        <label class="radio-option">
           <input
             type="radio"
             name="export-format"
             value="pdf"
-            checked={exportFormat === 'pdf'}
+            bind:group={exportFormat}
           />
           <span class="option-text">PDF</span>
-        </div>
-        <div class="radio-option" onclick={() => exportFormat = 'csv'}>
+        </label>
+        <label class="radio-option">
           <input
             type="radio"
             name="export-format"
             value="csv"
-            checked={exportFormat === 'csv'}
+            bind:group={exportFormat}
           />
           <span class="option-text">CSV</span>
-        </div>
+        </label>
       </div>
 
       <div class="dropdown-divider"></div>

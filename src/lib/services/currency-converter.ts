@@ -362,8 +362,6 @@ export class CurrencyConverter {
    * Cache all rates from an ECB daily fetch
    */
   private async cacheEcbRates(date: Date, rates: Map<string, Decimal>): Promise<void> {
-    const dateStr = this.formatDate(date);
-
     for (const [currency, rate] of rates) {
       const key = this.getEcbCacheKey(currency, date);
       this.cache.set(key, rate);

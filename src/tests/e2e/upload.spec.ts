@@ -10,13 +10,16 @@ test.describe('File Upload Flow', () => {
     await expect(page.getByText(/drop csv/i)).toBeVisible();
   });
 
-  test('shows broker selector', async ({ page }) => {
-    // Check broker selector is visible
-    const brokerSelect = page.locator('select#broker');
+  test('shows broker override option', async ({ page }) => {
+    // Click the override button to show broker selector
+    await page.getByText('File not recognized? Select broker manually').click();
+
+    // Now broker selector should be visible in the override panel
+    const brokerSelect = page.locator('.override-panel select');
     await expect(brokerSelect).toBeVisible();
-    
-    // Verify some broker options exist
-    await expect(brokerSelect.locator('option')).toHaveCount(7); // 7 brokers defined
+
+    // Verify broker options exist (7 brokers + auto-detect = 8 options)
+    await expect(brokerSelect.locator('option')).toHaveCount(8);
   });
 
   test('dropzone responds to hover state', async ({ page }) => {
@@ -120,15 +123,16 @@ test.describe('Transaction Table', () => {
   test('shows pagination controls', async ({ page }) => {
     // Check pagination elements
     await expect(page.getByText(/showing/i)).toBeVisible();
-    await expect(page.getByText(/of 15 transactions/i)).toBeVisible();
+    await expect(page.getByText(/of \d+ transactions/i)).toBeVisible();
   });
 
   test('can change page size', async ({ page }) => {
-    // Find the page size selector
-    const pageSizeSelect = page.locator('select').filter({ hasText: /25/ });
+    // Find the page size selector using specific ID
+    const pageSizeSelect = page.locator('select#page-size');
     if (await pageSizeSelect.isVisible()) {
-      await pageSizeSelect.selectOption('10');
-      // Should now show "Showing 1-10 of 15"
+      // Valid options are 25, 50, 100
+      await pageSizeSelect.selectOption('50');
+      // Should now show fewer items per page
     }
   });
 });

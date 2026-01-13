@@ -157,7 +157,6 @@ test.describe("Session Resume Dialog", () => {
 
   test("should show dialog when previous session exists", async ({
     page,
-    context,
   }) => {
     // First, load some data and save it
     await page.goto("/");
@@ -185,7 +184,6 @@ test.describe("Session Resume Dialog", () => {
 
   test("should restore session when resume clicked", async ({
     page,
-    context,
   }) => {
     // Load data first
     await page.goto("/");
@@ -359,9 +357,6 @@ test.describe("Tax Year Selector", () => {
     // Find tax year selector
     const taxYearSelector = page.locator(".tax-year-selector select").first();
     if (await taxYearSelector.isVisible()) {
-      // Get current value
-      const currentYear = await taxYearSelector.inputValue();
-
       // Get all options
       const options = await taxYearSelector.locator("option").allTextContents();
       expect(options.length).toBeGreaterThan(0);

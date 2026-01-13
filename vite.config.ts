@@ -14,8 +14,4 @@ export default defineConfig({
     port: 5174,
     strictPort: false, // Allow fallback if port is busy
   },
-  test: {
-    include: ['src/tests/**/*.test.ts'],
-    exclude: ['**/node_modules/**'],
-  }
 })

@@ -4,7 +4,8 @@
     exportCGTReportToCSV,
     exportDisposalsToCSV,
     exportCGTReportToPDF,
-    exportDisposalsToPDF
+    exportDisposalsToPDF,
+    toSummarizedReport
   } from "../export";
 
   let isOpen = $state(false);
@@ -20,11 +21,13 @@
   }
 
   function handleExport() {
-    const report = appState.report;
-    if (!report) {
+    const rawReport = appState.report;
+    if (!rawReport) {
       console.error('No report available to export');
       return;
     }
+
+    const report = toSummarizedReport(rawReport);
 
     if (exportFormat === 'csv') {
       if (exportType === 'full') {

@@ -443,7 +443,6 @@ export class CapitalGainsCalculator {
       if (regularQuantity.greaterThan(ZERO)) {
         const regularProportion = regularQuantity.div(quantity);
         const regularAmount = amount.times(regularProportion);
-        const regularFees = transaction.fees.times(regularProportion);
         const regularGbpAmount = gbpAmount.times(regularProportion);
         const regularGbpFees = gbpFees.times(regularProportion);
 
@@ -828,8 +827,7 @@ export class CapitalGainsCalculator {
     let totalGain = ZERO;
     const calculationEntries: CalculationEntry[] = [];
 
-    for (const [symbolCoverKey, coverData] of coverMap.entries()) {
-      const [symbol, openDateStr] = symbolCoverKey.split(':');
+    for (const [_symbolCoverKey, coverData] of coverMap.entries()) {
 
       // Gain = Proceeds (from short sale) - Cost to cover - Total fees
       // coverData.amount = proceeds from short sale

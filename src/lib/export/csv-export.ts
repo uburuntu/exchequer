@@ -7,8 +7,7 @@
 
 import type Decimal from 'decimal.js-light';
 import type { BrokerTransaction } from '../types/broker';
-import type { SummarizedTaxReport, PortfolioEntry } from '../types/report';
-import type { CalculationEntry } from '../calculator/types';
+import type { SummarizedTaxReport } from '../types/report';
 
 /**
  * Escape CSV field value

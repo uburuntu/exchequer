@@ -13,12 +13,12 @@ test.describe('Example Data Flow', () => {
     await expect(page.getByText('Upload Your Transactions')).toBeVisible();
     
     // Check load example button is visible
-    await expect(page.getByRole('button', { name: /load example data/i })).toBeVisible();
+    await expect(page.getByRole('button', { name: /try with sample trades/i })).toBeVisible();
   });
 
   test('loads example data and shows transactions', async ({ page }) => {
     // Click load example data button
-    await page.getByRole('button', { name: /load example data/i }).click();
+    await page.getByRole('button', { name: /try with sample trades/i }).click();
     
     // Wait for transactions to load
     await expect(page.getByText(/transactions loaded/i)).toBeVisible({ timeout: 5000 });
@@ -29,7 +29,7 @@ test.describe('Example Data Flow', () => {
 
   test('Summary tab shows calculations after loading example data', async ({ page }) => {
     // Load example data
-    await page.getByRole('button', { name: /load example data/i }).click();
+    await page.getByRole('button', { name: /try with sample trades/i }).click();
     await expect(page.getByText(/transactions loaded/i)).toBeVisible({ timeout: 5000 });
     
     // Click Summary tab
@@ -47,7 +47,7 @@ test.describe('Example Data Flow', () => {
 
   test('Timeline tab shows disposal entries after loading example data', async ({ page }) => {
     // Load example data
-    await page.getByRole('button', { name: /load example data/i }).click();
+    await page.getByRole('button', { name: /try with sample trades/i }).click();
     await expect(page.getByText(/transactions loaded/i)).toBeVisible({ timeout: 5000 });
     
     // Click Timeline tab
@@ -63,7 +63,7 @@ test.describe('Example Data Flow', () => {
 
   test('can switch between tabs', async ({ page }) => {
     // Load example data first
-    await page.getByRole('button', { name: /load example data/i }).click();
+    await page.getByRole('button', { name: /try with sample trades/i }).click();
     await expect(page.getByText(/transactions loaded/i)).toBeVisible({ timeout: 5000 });
     
     // Start on Transactions tab (default)
@@ -91,14 +91,14 @@ test.describe('Example Data Flow', () => {
 
   test('Clear All button removes all transactions', async ({ page }) => {
     // Load example data
-    await page.getByRole('button', { name: /load example data/i }).click();
+    await page.getByRole('button', { name: /try with sample trades/i }).click();
     await expect(page.getByText(/transactions loaded/i)).toBeVisible({ timeout: 5000 });
     
     // Click Clear All button
     await page.getByRole('button', { name: /clear all/i }).click();
     
     // Verify transactions are cleared - upload form should be visible again
-    await expect(page.getByRole('button', { name: /load example data/i })).toBeVisible();
+    await expect(page.getByRole('button', { name: /try with sample trades/i })).toBeVisible();
     
     // Tabs should no longer show transaction count
     await expect(page.getByRole('tab', { name: /transactions/i })).not.toContainText('15');
@@ -106,7 +106,7 @@ test.describe('Example Data Flow', () => {
 
   test('Tax year selector updates calculations', async ({ page }) => {
     // Load example data
-    await page.getByRole('button', { name: /load example data/i }).click();
+    await page.getByRole('button', { name: /try with sample trades/i }).click();
     await expect(page.getByText(/transactions loaded/i)).toBeVisible({ timeout: 5000 });
     
     // Verify tax year selector is visible

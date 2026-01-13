@@ -11,7 +11,7 @@ test.describe('Capital Gains Calculator E2E', () => {
 
     test('should load example data and show results', async ({ page }) => {
         // Click the example data button
-        const exampleBtn = page.locator('button.link-btn', { hasText: 'Load example transaction data' });
+        const exampleBtn = page.getByRole('button', { name: /try with sample trades/i });
         await expect(exampleBtn).toBeVisible();
         await exampleBtn.click();
 
@@ -35,7 +35,7 @@ test.describe('Capital Gains Calculator E2E', () => {
     });
 
     test('should show timeline after loading data', async ({ page }) => {
-        await page.locator('button.link-btn', { hasText: 'Load example transaction data' }).click();
+        await page.getByRole('button', { name: /try with sample trades/i }).click();
 
         // Wait for calculating to finish
         await expect(page.locator('.processing-overlay')).not.toBeVisible();

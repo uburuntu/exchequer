@@ -95,7 +95,7 @@ test.describe('Transaction Table', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('/');
     // Load example data to have transactions
-    await page.getByRole('button', { name: /load example data/i }).click();
+    await page.getByRole('button', { name: /try with sample trades/i }).click();
     await expect(page.getByText(/transactions loaded/i)).toBeVisible({ timeout: 5000 });
   });
 

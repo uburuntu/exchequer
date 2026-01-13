@@ -66,9 +66,7 @@ test.describe("FX Source Selector", () => {
 
   test("should allow changing FX source", async ({ page }) => {
     // Load example data first to have transactions
-    const exampleBtn = page.locator("button", {
-      hasText: "Load example transaction data",
-    });
+    const exampleBtn = page.getByRole('button', { name: /try with sample trades/i });
     if (await exampleBtn.isVisible()) {
       await exampleBtn.click();
       await page.waitForTimeout(1000);
@@ -161,9 +159,7 @@ test.describe("Session Resume Dialog", () => {
     // First, load some data and save it
     await page.goto("/");
 
-    const exampleBtn = page.locator("button", {
-      hasText: "Load example transaction data",
-    });
+    const exampleBtn = page.getByRole('button', { name: /try with sample trades/i });
     if (await exampleBtn.isVisible()) {
       await exampleBtn.click();
       await page.waitForTimeout(1000);
@@ -188,9 +184,7 @@ test.describe("Session Resume Dialog", () => {
     // Load data first
     await page.goto("/");
 
-    const exampleBtn = page.locator("button", {
-      hasText: "Load example transaction data",
-    });
+    const exampleBtn = page.getByRole('button', { name: /try with sample trades/i });
     if (await exampleBtn.isVisible()) {
       await exampleBtn.click();
       await page.waitForTimeout(1000);
@@ -219,9 +213,7 @@ test.describe("Session Resume Dialog", () => {
     // Load data first
     await page.goto("/");
 
-    const exampleBtn = page.locator("button", {
-      hasText: "Load example transaction data",
-    });
+    const exampleBtn = page.getByRole('button', { name: /try with sample trades/i });
     if (await exampleBtn.isVisible()) {
       await exampleBtn.click();
       await page.waitForTimeout(1000);
@@ -253,9 +245,7 @@ test.describe("Warnings Panel", () => {
 
   test("should not show warnings panel when no warnings", async ({ page }) => {
     // Load clean example data
-    const exampleBtn = page.locator("button", {
-      hasText: "Load example transaction data",
-    });
+    const exampleBtn = page.getByRole('button', { name: /try with sample trades/i });
     if (await exampleBtn.isVisible()) {
       await exampleBtn.click();
       await page.waitForTimeout(1000);
@@ -279,9 +269,7 @@ test.describe("Warnings Panel", () => {
   test("should display warnings with severity badges", async ({ page }) => {
     // This test would need data that generates warnings
     // For now, we verify the panel structure if it appears
-    const exampleBtn = page.locator("button", {
-      hasText: "Load example transaction data",
-    });
+    const exampleBtn = page.getByRole('button', { name: /try with sample trades/i });
     if (await exampleBtn.isVisible()) {
       await exampleBtn.click();
       await page.waitForTimeout(1000);
@@ -303,9 +291,7 @@ test.describe("Warnings Panel", () => {
   });
 
   test("should be collapsible", async ({ page }) => {
-    const exampleBtn = page.locator("button", {
-      hasText: "Load example transaction data",
-    });
+    const exampleBtn = page.getByRole('button', { name: /try with sample trades/i });
     if (await exampleBtn.isVisible()) {
       await exampleBtn.click();
       await page.waitForTimeout(1000);
@@ -346,9 +332,7 @@ test.describe("Tax Year Selector", () => {
 
   test("should allow changing tax year", async ({ page }) => {
     // Load example data first
-    const exampleBtn = page.locator("button", {
-      hasText: "Load example transaction data",
-    });
+    const exampleBtn = page.getByRole('button', { name: /try with sample trades/i });
     if (await exampleBtn.isVisible()) {
       await exampleBtn.click();
       await page.waitForTimeout(1000);
